@@ -18,6 +18,15 @@ public sealed class Task : AggregateRoot<TaskId>
         Apply(new TaskCreated(TaskId.CreateUnique(), title), true);
     }
 
+    public Task(IEnumerable<IDomainEvent> events)
+    {
+        Title = string.Empty;
+        foreach (var e in events)
+        {
+            Apply(e, false);
+        }
+    }
+
     private void Apply(IDomainEvent e, bool isNew)
     {
         switch (e)
