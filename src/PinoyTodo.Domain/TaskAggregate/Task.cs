@@ -1,4 +1,3 @@
-using PinoyCleanArch;
 using PinoyCleanArch.Domain.Common.Models;
 using PinoyTodo.Domain.TaskAggregate.Events;
 using PinoyTodo.Domain.TaskAggregate.ValueObjects;

@@ -72,6 +72,7 @@ public sealed class TaskRepository : BaseRepository, ITaskRepository
                 Version = task.Version,
                 Timestamp = e.Timestamp
             };
+            storedEvent.AddDomainEvent(e);
 
             Context.StoredEvents.Add(storedEvent);
         }

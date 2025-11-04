@@ -1,7 +1,7 @@
 using PinoyCleanArch.Domain.Common.Models;
 using PinoyTodo.Domain.TaskAggregate.ValueObjects;
 
-namespace PinoyCleanArch;
+namespace PinoyTodo.Domain.TaskAggregate.Events;
 
 public sealed class TaskCompleted : IDomainEvent
 {
