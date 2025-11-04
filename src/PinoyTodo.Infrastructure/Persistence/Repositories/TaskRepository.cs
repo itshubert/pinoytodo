@@ -68,7 +68,7 @@ public sealed class TaskRepository : BaseRepository, ITaskRepository
             {
                 AggregateId = task.Id.Value,
                 EventType = e.GetType().AssemblyQualifiedName ?? throw new InvalidOperationException("Event type cannot be determined."),
-                EventData = JsonSerializer.Serialize(e),
+                EventData = JsonSerializer.Serialize(e, e.GetType()),
                 Version = task.Version,
                 Timestamp = e.Timestamp
             };

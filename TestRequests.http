@@ -1,0 +1,12 @@
+@Host=http://localhost:4002
+
+### Create task
+POST {{Host}}/tasks
+Content-Type: application/json
+
+{
+    "title": "Wash the car"
+}
+
+### Complete task
+POST {{Host}}/tasks/0894b164-8980-4468-8fd3-cb7726b63d64/complete

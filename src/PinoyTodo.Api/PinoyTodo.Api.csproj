@@ -8,11 +8,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PinoyTodo.Application\PinoyTodo.Application.csproj" />
     <ProjectReference Include="..\PinoyTodo.Infrastructure\PinoyTodo.Infrastructure.csproj" />
+    <ProjectReference Include="..\PinoyTodo.Contracts\PinoyTodo.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
