@@ -27,7 +27,15 @@ public sealed class Task : AggregateRoot<TaskId>
         }
     }
 
-    private void Apply(IDomainEvent e, bool isNew)
+    public void Complete()
+    {
+        if (!IsCompleted)
+        {
+            Apply(new TaskCompleted(Id));
+        }
+    }
+
+    private void Apply(IDomainEvent e, bool isNew = true)
     {
         switch (e)
         {

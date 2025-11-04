@@ -25,7 +25,7 @@ public sealed class TaskRepository : BaseRepository, ITaskRepository
         throw new NotImplementedException();
     }
 
-    public async Task<Domain.TaskAggregate.Task> Load(TaskId taskId, CancellationToken cancellationToken = default)
+    public async Task<Domain.TaskAggregate.Task> LoadAsync(TaskId taskId, CancellationToken cancellationToken = default)
     {
         var events = await Context.StoredEvents
             .Where(se => se.AggregateId == taskId.Value)
@@ -53,7 +53,7 @@ public sealed class TaskRepository : BaseRepository, ITaskRepository
         throw new NotImplementedException();
     }
 
-    public async Task Save(Domain.TaskAggregate.Task task, CancellationToken cancellationToken = default)
+    public async Task SaveAsync(Domain.TaskAggregate.Task task, CancellationToken cancellationToken = default)
     {
         var newEvents = task.DomainEvents.ToList();
 
