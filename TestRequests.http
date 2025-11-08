@@ -9,4 +9,4 @@ Content-Type: application/json
 }
 
 ### Complete task
-POST {{Host}}/tasks/fcdc88eb-c19d-4b6d-8833-065ab12baef3/complete
+POST {{Host}}/tasks/6a3fc519-f684-4546-a5a5-671257c3f2b0/complete

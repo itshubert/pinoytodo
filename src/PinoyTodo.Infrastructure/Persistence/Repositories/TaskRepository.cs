@@ -15,14 +15,14 @@ public sealed class TaskRepository : BaseRepository, ITaskRepository
     {
     }
 
-    public Task BeginTransactionAsync(CancellationToken cancellationToken)
+    public async Task BeginTransactionAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await Context.Database.BeginTransactionAsync();
     }
 
-    public Task CommitTransactionAsync(CancellationToken cancellationToken)
+    public async Task CommitTransactionAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await Context.Database.CommitTransactionAsync();
     }
 
     public async Task<Domain.TaskAggregate.Task> LoadAsync(TaskId taskId, CancellationToken cancellationToken = default)
