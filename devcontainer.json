@@ -1,6 +1,6 @@
 {
   "name": ".NET Development Environment",
-  "image": "mcr.microsoft.com/dotnet/sdk:8.0",
+  "image": "mcr.microsoft.com/dotnet/sdk:9.0",
   "features": {
     // Add any desired features like Git, Node.js, etc.
   },
