@@ -1,9 +1,11 @@
 using Amazon;
+using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.SQS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PinoyCleanArch;
 using PinoyTodo.Application.Common.Interfaces;
@@ -36,6 +38,7 @@ public static partial class DiRegister
     {
         services.Configure<AWSSettings>(configuration.GetSection("AWSSettings"));
         services.Configure<QueueSettings>(configuration.GetSection("QueueSettings"));
+        var logger = services.BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Logging.ILogger<SqsClient>>();
 
         services.AddSingleton<IAmazonSQS>(sp =>
         {
@@ -43,8 +46,16 @@ public static partial class DiRegister
 
             if (awsSettings.UseLocalStack)
             {
-                var config = new AmazonSQSConfig { ServiceURL = awsSettings.ServiceUrl };
-                return new AmazonSQSClient(config);
+                var serviceUrl = !string.IsNullOrEmpty(awsSettings.ServiceUrl)
+                    ? awsSettings.ServiceUrl
+                    : "http://localstack:4566";
+
+                // serviceUrl = "http://localstack:4566";
+
+                logger.LogInformation($"LOCALSTACK SERVICEURL at {serviceUrl}");
+
+                var sqsConfig = new AmazonSQSConfig { ServiceURL = serviceUrl };
+                return new AmazonSQSClient(new AnonymousAWSCredentials(), sqsConfig);
             }
 
             var profileName = Environment.GetEnvironmentVariable("AWS_PROFILE");

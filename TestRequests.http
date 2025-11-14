@@ -5,8 +5,8 @@ POST {{Host}}/tasks
 Content-Type: application/json
 
 {
-    "title": "Wash the car"
+    "title": "Hello world!"
 }
 
 ### Complete task
-POST {{Host}}/tasks/6a3fc519-f684-4546-a5a5-671257c3f2b0/complete
+POST {{Host}}/tasks/77349935-a972-4e84-ac99-446729979f24/complete
