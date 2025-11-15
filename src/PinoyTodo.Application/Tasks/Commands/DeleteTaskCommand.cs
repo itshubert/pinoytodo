@@ -6,18 +6,18 @@ using PinoyTodo.Domain.TaskAggregate.ValueObjects;
 
 namespace PinoyTodo.Application.Tasks.Commands;
 
-public sealed record CompleteTaskCommand(Guid TaskId) : IRequest<ErrorOr<Unit>>;
+public sealed record DeleteTaskCommand(Guid TaskId) : IRequest<ErrorOr<Unit>>;
 
-public sealed class CompleteTaskCommandHandler : IRequestHandler<CompleteTaskCommand, ErrorOr<Unit>>
+public sealed class DeleteTaskCommandHandler : IRequestHandler<DeleteTaskCommand, ErrorOr<Unit>>
 {
     private readonly ITaskRepository _taskRepository;
 
-    public CompleteTaskCommandHandler(ITaskRepository taskRepository)
+    public DeleteTaskCommandHandler(ITaskRepository taskRepository)
     {
         _taskRepository = taskRepository;
     }
 
-    public async Task<ErrorOr<Unit>> Handle(CompleteTaskCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Unit>> Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
     {
         var task = await _taskRepository.LoadAsync(TaskId.Create(request.TaskId), cancellationToken);
 
@@ -26,7 +26,7 @@ public sealed class CompleteTaskCommandHandler : IRequestHandler<CompleteTaskCom
             return Errors.Task.InvalidTaskId(request.TaskId);
         }
 
-        task.Complete();
+        task.Delete();
 
         await _taskRepository.SaveAsync(task, cancellationToken);
 

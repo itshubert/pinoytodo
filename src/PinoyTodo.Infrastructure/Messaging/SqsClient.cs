@@ -30,6 +30,8 @@ public sealed class SqsClient : ISqsClient
         {
             "TaskCreated" => _queueSettings.TaskCreatedQueueName,
             "TaskCompleted" => _queueSettings.TaskCompletedQueueName,
+            "TaskDeleted" => _queueSettings.TaskDeletedQueueName,
+            "TaskTitleUpdated" => _queueSettings.TaskTitleUpdatedQueueName,
             _ => throw new InvalidOperationException($"No queue configured for event type {message.GetType().Name}.")
         };
 

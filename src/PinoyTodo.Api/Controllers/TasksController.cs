@@ -23,11 +23,33 @@ public class TasksController : BaseController
         return Ok(id);
     }
 
-    [HttpPost("{taskId}/complete")]
+    [HttpPut("{taskId}/title/{newTitle}")]
+    public async Task<IActionResult> UpdateTaskTitle([FromRoute] Guid taskId, string newTitle)
+    {
+        var response = await Mediator.Send(new UpdateTaskTitleCommand(taskId, newTitle));
+
+        return response.Match(
+            _ => NoContent(),
+            Problem);
+    }
+
+    [HttpPut("{taskId}/complete")]
     public async Task<IActionResult> CompleteTask([FromRoute] Guid taskId)
     {
-        await Mediator.Send(new CompleteTaskCommand(taskId));
+        var response = await Mediator.Send(new CompleteTaskCommand(taskId));
 
-        return NoContent();
+        return response.Match(
+            _ => NoContent(),
+            Problem);
+    }
+
+    [HttpDelete("{taskId}")]
+    public async Task<IActionResult> DeleteTask([FromRoute] Guid taskId)
+    {
+        var response = await Mediator.Send(new DeleteTaskCommand(taskId));
+
+        return response.Match(
+            _ => NoContent(),
+            Problem);
     }
 }

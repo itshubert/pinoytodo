@@ -34,6 +34,21 @@ public sealed class Task : AggregateRoot<TaskId>
         }
     }
 
+    public void UpdateTitle(string newTitle)
+    {
+        if (Title != newTitle)
+        {
+            var oldTitle = Title;
+            Title = newTitle;
+            Apply(new TaskTitleUpdated(Id, oldTitle, newTitle));
+        }
+    }
+
+    public void Delete()
+    {
+        Apply(new TaskDeleted(Id));
+    }
+
     private void Apply(IDomainEvent e, bool isNew = true)
     {
         switch (e)
@@ -47,6 +62,14 @@ public sealed class Task : AggregateRoot<TaskId>
                 IsCompleted = true;
                 CompletionTime = completed.CompletionTime;
                 break;
+            case TaskTitleUpdated titleUpdated:
+                Title = titleUpdated.NewTitle;
+                break;
+            case TaskDeleted:
+                // Handle deletion logic if necessary
+                break;
+            default:
+                throw new InvalidOperationException("Unknown domain event");
         }
 
         if (isNew)

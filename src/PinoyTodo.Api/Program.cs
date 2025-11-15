@@ -27,6 +27,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseExceptionHandler("/tasks/error");
 app.UseCors("AllowAll");
 // app.UseHttpsRedirection();
 

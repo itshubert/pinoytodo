@@ -25,7 +25,7 @@ public sealed class TaskRepository : BaseRepository, ITaskRepository
         await Context.Database.CommitTransactionAsync();
     }
 
-    public async Task<Domain.TaskAggregate.Task> LoadAsync(TaskId taskId, CancellationToken cancellationToken = default)
+    public async Task<Domain.TaskAggregate.Task?> LoadAsync(TaskId taskId, CancellationToken cancellationToken = default)
     {
         var events = await Context.StoredEvents
             .Where(se => se.AggregateId == taskId.Value)
@@ -34,7 +34,7 @@ public sealed class TaskRepository : BaseRepository, ITaskRepository
 
         if (!events.Any())
         {
-            throw new InvalidOperationException($"Task with ID {taskId} not found.");
+            return null;
         }
 
         var result = events.Select(se =>
@@ -55,8 +55,20 @@ public sealed class TaskRepository : BaseRepository, ITaskRepository
 
     public async Task SaveAsync(Domain.TaskAggregate.Task task, CancellationToken cancellationToken = default)
     {
-        var newEvents = task.DomainEvents.ToList();
+        AddStoreEvents(task);
 
+        await Context.SaveChangesAsync(cancellationToken);
+        task.ClearDomainEvents();
+    }
+
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        await Context.SaveChangesAsync(cancellationToken);
+    }
+
+    private void AddStoreEvents(Domain.TaskAggregate.Task task)
+    {
+        var newEvents = task.DomainEvents.ToList();
         if (!newEvents.Any())
         {
             return;
@@ -76,13 +88,5 @@ public sealed class TaskRepository : BaseRepository, ITaskRepository
 
             Context.StoredEvents.Add(storedEvent);
         }
-
-        await Context.SaveChangesAsync(cancellationToken);
-        task.ClearDomainEvents();
-    }
-
-    public async Task SaveChangesAsync(CancellationToken cancellationToken)
-    {
-        await Context.SaveChangesAsync(cancellationToken);
     }
 }

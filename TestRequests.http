@@ -1,12 +1,18 @@
-@Host=http://localhost:4000
+@Host=http://localhost:4002
 
 ### Create task
-POST {{Host}}/eventstore
+POST {{Host}}/tasks
 Content-Type: application/json
 
 {
-    "title": "Go to the city!!"
+    "title": "Buy carry on luggage!!"
 }
 
 ### Complete task
-POST {{Host}}/tasks/77349935-a972-4e84-ac99-446729979f24/complete
+PUT {{Host}}/tasks/2caa7af2-ac98-449e-b6af-20198a449679/complete
+
+### Update task title
+PUT {{Host}}/tasks/4fefb01a-1043-47ea-a762-ce657ee70d05/title/New%20Task%20Title
+
+### Delete task
+DELETE {{Host}}/tasks/4fefb01a-1043-47ea-a762-ce657ee70d05
