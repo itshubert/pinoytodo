@@ -1,11 +1,11 @@
-@Host=http://localhost:4002
+@Host=http://localhost:4000
 
 ### Create task
-POST {{Host}}/tasks
+POST {{Host}}/eventstore
 Content-Type: application/json
 
 {
-    "title": "Hello world!"
+    "title": "Go to the city!!"
 }
 
 ### Complete task

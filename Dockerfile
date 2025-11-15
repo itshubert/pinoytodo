@@ -9,11 +9,17 @@ COPY src/PinoyTodo.Application/PinoyTodo.Application.csproj ./src/PinoyTodo.Appl
 COPY src/PinoyTodo.Contracts/PinoyTodo.Contracts.csproj ./src/PinoyTodo.Contracts/
 COPY src/PinoyTodo.Domain/PinoyTodo.Domain.csproj ./src/PinoyTodo.Domain/
 COPY src/PinoyTodo.Infrastructure/PinoyTodo.Infrastructure.csproj ./src/PinoyTodo.Infrastructure/
-COPY PinoyPackages/ /PinoyPackages/
 
 # Restore NuGet packages
 # RUN dotnet restore PinoyTodo.sln
-RUN dotnet restore --source "/PinoyPackages" --source "https://api.nuget.org/v3/index.json"
+# Restore NuGet packages using build secrets
+# The secrets will be mounted at runtime and not stored in the image layers
+RUN --mount=type=secret,id=github_username \
+    --mount=type=secret,id=github_token \
+    dotnet nuget add source https://nuget.pkg.github.com/itshubert/index.json \
+    --username "$(cat /run/secrets/github_username)" \
+    --password "$(cat /run/secrets/github_token)" \
+    --store-password-in-clear-text --name itshubert
 
 
 # Copy the entire source code
